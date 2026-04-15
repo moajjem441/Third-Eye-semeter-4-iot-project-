@@ -7,6 +7,7 @@
 #include <RTClib.h>
 #include <time.h>  // For NTP
 
+
 // Ultrasonic Sensor Pins
 #define trigPin 27
 #define echoPin 26
