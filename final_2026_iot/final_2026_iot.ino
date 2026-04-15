@@ -12,9 +12,9 @@
 #define echoPin 26
 
 // Switch pins
-#define switchWiFiPin 33     // WiFi
-#define switchUltraPin 32    // Ultrasonic
-#define switchRTC_DHTPin 25  // RTC + DHT22
+#define switchWiFiPin 33      // WiFi
+#define switchUltraPin 32     // Ultrasonic
+#define switchRTC_DHTPin 25   // RTC + DHT22
 
 // DHT Sensor
 #define DHTPIN 14
@@ -28,8 +28,8 @@ RTC_DS3231 rtc;
 HardwareSerial mp3(2);
 
 // WiFi credentials
-const char* ssid = "Sahin";
-const char* password = "87654321";
+const char* ssid = "narzo 50";
+const char* password = "naky1234";
 const char* city = "Dhaka";
 const char* apiKey = "08425a8650df8d9f23a777284e81845a";
 
@@ -72,7 +72,7 @@ void setup() {
   rtc.begin();
 
   if (rtc.lostPower()) {
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));  // Set to compile time
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); // Set to compile time
   }
 
   mp3.begin(9600, SERIAL_8N1, 16, 17);
@@ -242,7 +242,8 @@ void setupNTP() {
       timeinfo.tm_mday,
       timeinfo.tm_hour,
       timeinfo.tm_min,
-      timeinfo.tm_sec);
+      timeinfo.tm_sec
+    );
     rtc.adjust(now);
     Serial.println("RTC updated from NTP!");
   } else {
@@ -277,19 +278,19 @@ void fetchOnlineWeather() {
       return;
     }
 
-    String cityName = doc["name"] | "Unknown";
-    float temp = doc["main"]["temp"] | 0.0;
-    float feels_like = doc["main"]["feels_like"] | 0.0;
-    int humidity = doc["main"]["humidity"] | 0;
-    int pressure = doc["main"]["pressure"] | 0;
-    float windSpeed = doc["wind"]["speed"] | 0.0;
-    int windDeg = doc["wind"]["deg"] | 0;
-    int visibility = doc["visibility"] | 0;
-    int cloudCover = doc["clouds"]["all"] | 0;
-    long sunriseUnix = doc["sys"]["sunrise"] | 0;
-    long sunsetUnix = doc["sys"]["sunset"] | 0;
-    String weatherMain = doc["weather"][0]["main"] | "N/A";
-    String description = doc["weather"][0]["description"] | "N/A";
+  String cityName     = doc["name"] | "Unknown";
+    float temp          = doc["main"]["temp"] | 0.0;
+    float feels_like    = doc["main"]["feels_like"] | 0.0;
+    int humidity        = doc["main"]["humidity"] | 0;
+    int pressure        = doc["main"]["pressure"] | 0;
+    float windSpeed     = doc["wind"]["speed"] | 0.0;
+    int windDeg         = doc["wind"]["deg"] | 0;
+    int visibility      = doc["visibility"] | 0;
+    int cloudCover      = doc["clouds"]["all"] | 0;
+    long sunriseUnix    = doc["sys"]["sunrise"] | 0;
+    long sunsetUnix     = doc["sys"]["sunset"] | 0;
+    String weatherMain  = doc["weather"][0]["main"] | "N/A";
+    String description  = doc["weather"][0]["description"] | "N/A";
 
     // Print time from RTC
     Serial.println("\n--- Time and Date Info ---");
@@ -306,7 +307,7 @@ void fetchOnlineWeather() {
     strftime(sunriseStr, sizeof(sunriseStr), "%H:%M:%S", localtime(&sunriseTime));
     strftime(sunsetStr, sizeof(sunsetStr), "%H:%M:%S", localtime(&sunsetTime));
 
-    Serial.printf("Today Sunrise      : %s\n", sunriseStr);
+     Serial.printf("Today Sunrise      : %s\n", sunriseStr);
     Serial.printf("Today Sunset       : %s\n", sunsetStr);
 
     // Print weather info
@@ -321,24 +322,9 @@ void fetchOnlineWeather() {
     Serial.printf("Visibility   : %.2f km\n", visibility / 1000.0);
     Serial.printf("Cloud Cover  : %d%%\n", cloudCover);
     Serial.printf("Condition    : %s (%s)\n", weatherMain.c_str(), description.c_str());
-
-    Serial.println("\n--- Weather Prediction ---");
-
-    if (pressure < 1005 && cloudCover > 70) {
-      Serial.println("⚠️ Rain is likely. Don't forget your umbrella!");
-    } else if (cloudCover > 80) {
-      Serial.println("☁️ Very cloudy, but low chance of rain.");
-    } else if (pressure >= 1010 && cloudCover < 20) {
-      Serial.println("☀️ Clear sky. It's likely to be a nice sunny day.");
-    } else if (weatherMain == "Rain") {
-      Serial.println("🌧️ It's currently raining or will rain soon.");
-    } else if (weatherMain == "Clear") {
-      Serial.println("☀️ The sky is clear right now.");
-    } else {
-      Serial.println("ℹ️ Normal weather conditions. Nothing extreme.");
-    }
-
-  } else {
+    
+  }
+   else {
     Serial.print("HTTP GET failed, code: ");
     Serial.println(httpCode);
   }
